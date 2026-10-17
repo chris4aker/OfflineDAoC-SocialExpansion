@@ -222,9 +222,19 @@ linkdeads, nemesis) plus bot memory of you, and fixes from the Social Expansion 
   - A 5-speaker debate played to the end. The busy-speaker wait itself wasn't triggered.
   - Load: the launcher's bot AI delay was 0.8 ms with 549 bots online, 1.3 ms with 781, and
     1.2 ms with 889 (4 ms budget). The log showed no lag warnings and no errors.
+- **Play session with chris.9, then 0.36-chris.10 (2026-10-17):**
+  - It ran 80 minutes with every switch on. Results are in LIVING-SERVER.md, "Third check".
+  - Seen: two debates finished, each after a busy-speaker wait; 9 frontier alarms; 52 "brb" breaks.
+    No errors.
+  - Fixed in chris.10 (pull request #8): tells, `/invite` and `/target` by name now reach bots,
+    and the new client's target buttons and server target changes work. These were checked in
+    game, as was a fix to the stick and follow toggle. A misplaced gossip line is fixed too, but
+    not yet seen in game.
+  - Found, not fixed (stock code): a low-level group can die for 15 minutes on its way to a
+    meetup. "lfg" answers promise invites that bots never send.
 - **Before the stage 7 merge into `main`:** decide whether the unchecked parts (keep claims, bot
-  XP rates, the busy-speaker wait in game, long sessions) must be seen first or can ship marked
-  as unchecked.
+  XP rates, linkdeads, nemesis chat lines, you rezzing a bot) must be seen first or can ship
+  marked as unchecked.
 - Docs: [LIVING-SERVER.md](LIVING-SERVER.md). Planning record:
   [LIVING-SERVER-BACKLOG.md](LIVING-SERVER-BACKLOG.md).
 

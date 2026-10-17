@@ -939,6 +939,10 @@ public partial class DaocClient : Node
 				d["kind"] = "door_state";                 // relic temples, every zone door) - the client's door id
 				d["door_id"] = (long)r.Int(); d["open"] = r.Byte() == 1; d["flag"] = (int)r.Byte();
 				return d;
+			case 0xF6:                                    // ChangeTarget (168): the server picks your target - /target <name>,
+				d["kind"] = "change_target";              // /assist; 0 = none (the client answers with its own Target packet)
+				d["oid"] = (int)r.Short(); r.Short();
+				return d;
 			case 0xF5:                                    // SiegeWeaponInterface (1124): the siege weapon you control
 			{
 				int sflag = r.Short();

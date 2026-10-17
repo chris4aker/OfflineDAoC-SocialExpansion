@@ -36,7 +36,7 @@ CLASSES = {
 }
 ALL_CLASSES = set().union(*CLASSES.values())
 FLAGS = {'in_group', 'solo', 'in_town', 'in_dungeon', 'in_rvr', 'at_camp', 'traveling', 'just_leveled',
-         'just_died', 'bag_full', 'has_listing', 'knows_player', 'player_nearby'}
+         'just_died', 'bag_full', 'has_listing', 'knows_player', 'player_nearby', 'player_guildless'}
 INTENTS = {'unknown', 'greeting', 'banter', 'abuse', 'grouping', 'grinding', 'travel', 'dungeon', 'rvr',
            'trading', 'help', 'farewell', 'ignoreoutofworld'}
 MOODS = {'friendly', 'neutral', 'cool', 'rival'}

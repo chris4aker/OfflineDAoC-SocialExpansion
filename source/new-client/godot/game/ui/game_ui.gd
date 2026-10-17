@@ -525,12 +525,12 @@ func _refresh_target_window() -> void:
 func _target_command(cmd: String) -> void:
 	if cmd == "attack":
 		PlayerData.attack_toggle_requested.emit()
-	elif Server.active:                                     # the server's commands, as the client's buttons sent them
-		Server.command("/" + cmd)
+	elif cmd in ["face", "follow", "stick"]:               # the client's own commands, in the server's game too: the
+		PlayerData.track_requested.emit(cmd)                # server has none of them ("No such command (/follow)",
+	elif Server.active:                                     # 2026-10-17); typed /follow already went this way
+		Server.command("/" + cmd)                           # the server's commands, as the client's buttons sent them
 	elif cmd == "invite":
 		PlayerData.invite_requested.emit("")
-	elif cmd in ["face", "follow", "stick"]:
-		PlayerData.track_requested.emit(cmd)
 	else:
 		message("You can't do that here.", "system")
 

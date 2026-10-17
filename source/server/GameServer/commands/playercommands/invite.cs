@@ -28,6 +28,18 @@ namespace DOL.GS.Commands
                 return;
             }
 
+            if (args.Length >= 2 && ClientService.Instance.GetPlayerByPartialName(targetName, out _) == null &&
+                AutonomousBotRegistry.TryGetOnline(targetName, client.Player.Realm, out GameBot worldBot))
+            {
+                if (!BotGroupInvite.CloseEnoughToInviteByName(client.Player, worldBot))
+                {
+                    client.Out.SendMessage($"{worldBot.Name} is too far away to join you. Meet up first.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                    return;
+                }
+                BotGroupInvite.TryInvite(client.Player, worldBot);
+                return;
+            }
+
             if (args.Length < 2)
             {
                 // Inviting by target

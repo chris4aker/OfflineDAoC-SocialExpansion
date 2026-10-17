@@ -137,6 +137,7 @@ func _on_world(kind: String, d: Dictionary) -> void:
 		"dialog": _dialog(d)
 		"sound_effect": _sound_effect(d)
 		"door_state": _door_state(d)
+		"change_target": _change_target(int(d.oid))
 		"siege_window", "siege_close": _siege_window(kind, d)
 		"siege_anim": _siege_anim(d)
 		"warmap_keeps", "warmap_fights":
@@ -642,7 +643,8 @@ func select(n: Npc) -> void:
 	target = n
 	var nm := String(n.spawn.name)
 	var lower := nm.length() > 0 and nm[0] == nm[0].to_lower()
-	PlayerData.message.emit(("You target the [%s]." % nm) if lower else ("You target [%s]." % nm), "system")
+	if not _server_chose_target:                           # the server already said "You target ..."
+		PlayerData.message.emit(("You target the [%s]." % nm) if lower else ("You target [%s]." % nm), "system")
 	PlayerData.set_target({"name": nm, "level": n.state.level, "con_color": n.con_color(PlayerData.level),
 			"health": n.state.health, "guild": String(n.spawn.get("guild", ""))})
 	if Server.client:
@@ -1490,6 +1492,22 @@ func seat_of(steed: NpcState) -> Vector3:
 
 
 ## A raid window slot clicked: target that member (its view if drawn, else straight on the server).
+## The server's ChangeTarget (/target <name>, /assist): select that object as a click would - the client then sends
+## its Target packet, which is what sets the server's target. Missing until 2026-10-17: "/target Haralhelm" answered
+## "[GM] You target Haralhelm." but the target window stayed empty and /invite found no target.
+var _server_chose_target := false
+
+
+func _change_target(oid: int) -> void:
+	if oid <= 0:
+		if target or target_door:
+			clear_target()
+		return
+	_server_chose_target = true
+	target_oid(oid)
+	_server_chose_target = false
+
+
 func target_oid(oid: int) -> void:
 	if oid <= 0:
 		return

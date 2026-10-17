@@ -176,11 +176,15 @@ While a scene runs, bots don't start other /faction chatter in that realm.
     minutes after start with 5 speakers. It played to the end in 3½ minutes
     (`reason="finished"`): the armsman polearm / two-hander / crossbow argument, ending "Ok I
     will just flip a coin at the trainer." No speaker was busy, so `BOT_DEBATE_WAIT` didn't
-    happen. The waiting path is covered by the unit test, not yet seen in game.
+    happen.
+  - **Play session with chris.9** (80 minutes): `alb_wizard_lines` (5 speakers) and
+    `soc_dragon_points` (6 speakers) both finished. Each logged one `BOT_DEBATE_WAIT` for a busy
+    speaker before going on, so the waiting path is now seen in game. The second debate started
+    36½ minutes after the first ended, inside the 30–45 minute window.
 - **Lines:** about 25 voice lines in `/faction`, `/say` and `/gu` fit the moment, in period
   style, with no `{` or `}`.
 - **Not checked:** how busy towns are compared with stock, how often lines repeat over hours,
-  the 30–45 minute debate repeat, and ding or death lines from voices.
+  and ding or death lines from voices.
 
 Things to watch in a longer session:
 - towns busier or emptier than in stock 0.36

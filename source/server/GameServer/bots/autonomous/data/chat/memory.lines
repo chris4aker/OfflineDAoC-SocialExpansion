@@ -84,7 +84,11 @@ if you need a {player_class}, {player} is good people
 {player} pulled us out of a mess at {place}, ty again
 grouped with {player} at {place}, solid player
 @who Socialite
+# only about a player with no guild yet (a starting guild counts as none): in-game check 2026-10-17, said of a
+# player already in a bot guild
+@needs player_guildless
 we should get {player} into a guild, that one knows what they are doing
+@needs
 @mood cool
 @who *
 {player} is fine i guess, just not my kind of group

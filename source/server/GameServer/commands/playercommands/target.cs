@@ -26,6 +26,14 @@ namespace DOL.GS.Commands
                     client.Out.SendMessage($"You target {targetPlayer.GetName(0, true)}.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
                     return;
                 }
+                else if (AutonomousBotRegistry.TryGetOnline(args[1], client.Player.Realm, out GameBot bot) &&
+                         client.Player.CurrentRegion == bot.CurrentRegion && client.Player.IsWithinRadius(bot, WorldMgr.YELL_DISTANCE) &&
+                         !bot.IsStealthed)
+                {
+                    client.Out.SendChangeTarget(bot);
+                    client.Out.SendMessage($"You target {bot.GetName(0, true)}.", eChatType.CT_System, eChatLoc.CL_SystemWindow);
+                    return;
+                }
                 else if (client.Account.PrivLevel > 1)
                 {
                     foreach (GameNPC npc in client.Player.GetNPCsInRadius(800))

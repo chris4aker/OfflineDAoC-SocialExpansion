@@ -34,6 +34,14 @@ namespace DOL.GS.Commands
             if (targetPlayer != null && !GameServer.ServerRules.IsAllowedToUnderstand(client.Player, targetPlayer))
                 targetPlayer = null;
 
+            if (targetPlayer == null && AutonomousBotRegistry.TryGetOnline(targetName, client.Player.Realm, out GameBot bot))
+            {
+                // Bots invite tells ("pst me"); they answer with a /send of their own.
+                ChatUtil.SendSendMessage(client, "Social.SendMessage.Private.YouSendTo", message, bot.Name);
+                AutonomousBotChatCoordinator.OnPlayerTell(client.Player, bot, message);
+                return;
+            }
+
             if (targetPlayer == null)
             {
                 // Message: "{0} is not in the game, or is a member of another realm."

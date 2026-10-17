@@ -9668,7 +9668,9 @@
     1,
     50
    ],
-   "needs": [],
+   "needs": [
+    "player_guildless"
+   ],
    "intent": "",
    "mood": "friendly",
    "weight": 1.0,

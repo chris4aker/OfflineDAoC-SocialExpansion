@@ -626,6 +626,9 @@ func start_track(mode: String, target: Node3D, target_name: String) -> bool:
 	if target == self:
 		PlayerData.message.emit("You can't %s yourself!" % mode, "system")
 		return false
+	if mode == track_mode and target == track_target:   # the same command again turns it off, as the old client did
+		stop_track()                                     # (in-game check 2026-10-17: a second /stick stuck again)
+		return false
 	if mode != "face" and global_position.distance_to(target.global_position) > TRACK_START_M:
 		PlayerData.message.emit("%s is too far away to %s." % [target_name, mode], "system")
 		return false

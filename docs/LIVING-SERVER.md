@@ -289,13 +289,58 @@ Seen in game with chris.8:
   About 90 s later it offered again ("got you Claudecheck, one sec lol"); I accepted and was
   rezzed.
 
-Not checked: a player rezzing a dead bot, and its thank-you line. The Godot client clears your
-target when the bot dies and doesn't show the corpse, so Revive had no target ("You must select
-a target for this spell!"). The original client wasn't tried.
+Not checked: a player rezzing a dead bot, and its thank-you line. In the Godot client, Revive had
+no target ("You must select a target for this spell!"). Whether the client clears the target or
+hides the corpse is **not confirmed**: I click slowly, and a dead bot's corpse was visible in the
+2026-10-17 play session. The original client wasn't tried.
 
 **Godot client gaps seen** (the client's, not this build's):
-- The FOLLOW and FACE buttons send `/follow` and `/face`, which the server doesn't have.
-- A dead NPC's corpse isn't shown and can't be targeted, so you can't rez a bot from it.
+- The FACE, FOLLOW and STICK buttons sent `/face`, `/follow` and `/stick`, which the server
+  doesn't have. **Fixed in chris.10** and checked in game.
+- The client ignored the server's ChangeTarget packet, so `/target <name>` and `/assist` never
+  changed your target. **Fixed in chris.10** and checked in game with `/target Rhuz`.
+- Targeting a corpse to rez it: not confirmed (see above).
+
+**Third check: a play session, build 0.36-chris.9** (2026-10-17, 14:17 to 15:37, Godot client).
+All eight switches were on, the schedule was `session`, and each realm had 300 bots (150 at level
+1, 150 at level 50). I played Claudecheck (GM, Cleric 50) and judged results from the server log
+rather than my own reaction times.
+- **Seen working:**
+  - Two debates played to the end. Each waited once for a busy speaker (`BOT_DEBATE_WAIT`), so the
+    chris.9 wait is now seen in game. The second started 36½ minutes after the first ended.
+  - 9 frontier alarms in `/faction`, such as "11 hibs at Nottmoor Faste".
+  - 52 "brb" breaks and 218 session logouts.
+  - 87 new nemesis records, one kill each; no revenge yet.
+  - Bot memory: Maraenisette remembered grouping with me (Grouped=3), and gossiped about me by
+    name in `/faction`.
+  - Maraenisette joined my group, followed me and buffed me.
+  - No errors after start.
+- **Not seen:** a linkdead, nemesis chat lines, a keep claim, and me rezzing a bot.
+  - Linkdeads roll only for bots in your own group (1 in 90 every 30 s, then 45 minutes'
+    cooldown). I was grouped for about 30 minutes, so not seeing one is about a coin flip.
+- **Found and fixed in 0.36-chris.10** (pull request #8). Checked in game afterwards unless
+  marked otherwise:
+  - **Tells to bots.** Bots say "pst me" (38 corpus lines), but `/send <bot>` answered "not in the
+    game". A tell now reaches an online bot of your realm, and it answers with a `/send`. "hey,
+    how is it going?" got "hey good to see someone else out here".
+  - **Join requests.** Players lead and bots join, so a tell asking to join is answered with
+    "invite me", or "meet up and inv me" when the bot is far away.
+  - **Invite by name.** `/invite <name>` found only companion bots. It now invites a nearby
+    autonomous bot (same region, within 6,000 units). Farther away it says "too far away to join
+    you. Meet up first."
+  - **Target by name.** `/target <name>` now finds a same-realm bot nearby, for players too.
+  - **The new client's target buttons.** See "Godot client gaps seen" above.
+  - **A second `/stick` or `/follow`** on the same target now turns it off, as in the old client.
+    (Checked with FACE, which uses the same code: "now facing", then "no longer facing".)
+  - **Guild gossip.** "we should get Claudecheck into a guild" was said while I was in a bot
+    guild. It is now said only about a player with no guild; a starting guild counts as none.
+    (Unit test only: gossip comes about once every 30–60 minutes.)
+- **Found, not fixed (stock 0.36 code, not Living Server):**
+  - **A group can die on its way to a meetup.** A Midgard group of five bots, levels 1 to 3, spent
+    the full 15-minute meetup wait dying near its meetup point: about 70 deaths in all. Then it was
+    dropped as no-shows. `AutonomousRendezvousAttendance` waits 15 minutes and has no limit on
+    deaths along the way.
+  - **"lfg" gets answers like "we have room for 3"**, but bots never invite players.
 
 Suggested checks that remain:
 1. Turn on **Grats**, group with bots and level: groupmates say grats in `/group`.
@@ -303,9 +348,9 @@ Suggested checks that remain:
    asked you by name, and it thanks you. (The ask and a bot rezzing you were seen with chris.8.)
 3. Turn on **Bots remember you**: group with a bot for a while, leave, and walk past it later. It
    greets you by name.
-4. Turn on **Frontier alarms** and go to the frontier: `/faction` calls enemy groups, at most one
-   every 2 minutes.
+4. ~~Frontier alarms~~: seen in the chris.9 play session (9 in 80 minutes).
 5. Set **Bot schedule** to `clock` and start the server at different times of day: the online
    count in the launcher follows the time.
-6. Turn on **Breaks and linkdeads** and group with bots for an hour: watch for "brb" and "ld".
+6. Turn on **Breaks and linkdeads** and group with bots for an hour: watch for "ld". ("brb" was
+   seen in the chris.9 play session.)
 7. Click **CAMELOT HERALD**.

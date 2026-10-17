@@ -206,7 +206,8 @@ public static partial class AutonomousLivingServer
                     bot.CurrentRegion == subject.CurrentRegion && bot.IsWithinRadius(subject, WorldMgr.SAY_DISTANCE * 2))
                     continue;
                 if (AutonomousBotVoices.TryEventLine(bot, "gossip", out string line, slots: MemorySlots(row, subject),
-                        flags: ["knows_player"], mood: "friendly"))
+                        flags: AutonomousBotGuildSocial.CountsAsGuildless(subject.Guild) ? ["knows_player", "player_guildless"] : ["knows_player"],
+                        mood: "friendly"))
                     Speak(bot, Channel.Faction, line);
                 break;
             }

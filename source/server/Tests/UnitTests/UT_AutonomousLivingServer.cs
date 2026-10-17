@@ -297,6 +297,23 @@ namespace DOL.GS.Tests
         }
 
         [Test]
+        public void GossipAboutGettingAPlayerIntoAGuildOnlyWhenTheyHaveNone()
+        {
+            // In-game check 2026-10-17: "we should get Claudecheck into a guild" while Claudecheck was in a bot guild.
+            var random = new Random(4);
+            var slots = Slots(("player", "Claudecheck"), ("player_class", "cleric"), ("place", "Campacorentin Forest"));
+            var picked = new Dictionary<bool, HashSet<string>> { [false] = new(), [true] = new() };
+            foreach (bool guildless in new[] { false, true })
+                for (int i = 0; i < 400; i++)
+                    if (Corpus.TryPick("gossip", guildless ? Speaker(BotPersonalityType.Socialite, "knows_player", "player_guildless")
+                                                           : Speaker(BotPersonalityType.Socialite, "knows_player"),
+                            slots, null, DateTime.UtcNow, random, out string text, out _, mood: "friendly"))
+                        picked[guildless].Add(text);
+            Assert.That(picked[false].Where(text => text.Contains("into a guild")), Is.Empty);
+            Assert.That(picked[true].Where(text => text.Contains("into a guild")), Is.Not.Empty);
+        }
+
+        [Test]
         public void FirstsAreSeededOnceSoBotsMadeAtFiftyLaterDontTakeThem()
         {
             // In-game check 2026-10-17: every start re-seeded, so "+ Lv.50" bots took every level-50 title.

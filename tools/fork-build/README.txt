@@ -38,7 +38,7 @@ copy. It also puts three settings helpers in tools\claude-version and these docs
 docs\fork-build-<name>.
 
 Check: start the game as usual. The server log shows a line like
-  FORK_BUILD name=0.36-chris.9 commit=... bot_guilds=off xp_rate_by_level=off ... bot_voices=off living=off bot_schedule=off
+  FORK_BUILD name=0.36-chris.10 commit=... bot_guilds=off xp_rate_by_level=off ... bot_voices=off living=off bot_schedule=off
 
 UNDO
 ----
